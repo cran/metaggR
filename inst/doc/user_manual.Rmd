@@ -1,0 +1,104 @@
+---
+title: "Knowledge Weighted Estimate"
+author: Asa Palley and Ville Satopää
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Knowledge Weighted Estimate}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Introduction
+The `metaggR` package implements the knowledge-weighted estimate proposed in [Palley and Satopää (2020)](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3504286). 
+This procedure aggregates judges' estimates of a continuous outcome. To do so, each judge is asked to provide two 
+responses:
+
+1. An estimate of the outcome, and
+1. a prediction of the other judges' average estimate of the outcome.
+
+Aggregation is done with the function `knowledge_weighted_estimate(E,P)` that inputs *J* judges’ estimates of the outcome (`E`) and predictions of others (`P`), and outputs the knowledge-weighted estimate. In the following two sections we will illustrate this aggregator on a simple example and on experimental data included in the package. 
+
+# Example 1: Three Gorges Dam
+This section illustrates `metaggR` on the Three Gorges Dam example in [Palley and Satopää (2020)](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3504286). First, we will upload the library:
+
+```{r setup}
+library(metaggR)
+```
+
+Next, we can aggregate the judges' estimates:
+
+```{r}
+# Judges' estimates:
+E = c(50, 134, 206, 290, 326, 374)
+# Judges' predictions of others:
+P = c(26, 92, 116, 218, 218, 206)
+# Knowledge-weighted estimate:
+knowledge_weighted_estimate(E,P)
+```
+Therefore the final knowledge-weighted estimate is 329.3266.
+
+# Example 2: Calorie Counts
+This section illustrates `metaggR` on real-world data collected in an experiment in Palley and Satopää (2020).
+In this experiment participants were presented with 36 different pictures of food from different restaurants
+and were asked to estimate the total number of calories in these dishes.
+ Each response involves three steps:
+ 
+1. __Initial Estimates__: On the first screen the participant was presented with a picture of a meal and asked _How many calories do you think are in this meal?_
+1. __Predictions of Others__: On the second screen the participant saw the same picture, was reminded of their previous estimate, and given the statement: _We will be showing this picture to other participants as well. Just as we did with you, we will ask them how many calories they believe are in this meal_. The participant was then asked to predict _How many calories do you think that others  will guess on average?_
+1. __Final Estimates__: On the third screen the participant saw the same picture again and was asked _After having reflected on others, what is y our own final best estimate of the number of calories in this meal?_
+
+The `metaggR` package includes the data in the `calories` dataset. This dataset is a list with 4 elements:
+
+1.  `true_calories`: A vector of true calorie counts of each 36 meals.
+1. `estimates_initial`: A list of the judges' initial estimates of the calorie counts in each of the 36 meals.
+1. `estimates_final`: A list of the judges' final estimates of the calorie counts in each of the 36 meals.
+1. `predictions_of_others`: A list of the judges' predictions of the others' average estimate of the calorie counts in each of the 36 meals.
+
+The elements of each member of `calories` correspond to the same meal. Specifically, the *j*th elements of `true_calories`, `estimates_initial`, `estimates_final`, and `predictions_of_others` represent the true calories, initial estimates, final estimates, and predictions of others of the *j*th meal.
+
+To illustrate, we will consider the responses given for the first meal. First, we will load the package and the `calories` dataset:
+
+```{r}
+library(metaggR)
+data(calories)
+```
+
+Next, we will pick out the responses given for the first meal:
+
+```{r}
+meal = 1
+# True number of calories in the first meal:
+(theta = calories$true_calories[meal])
+# Judges' initial estimates of the number of calories in the first meal:
+(E1 = calories$estimates_initial[[meal]])
+# Judges' final estimates of the number of calories in the first meal:
+(E2 = calories$estimates_final[[meal]])
+# Judges' predictions of others' average estimate of the number of calories in the first meal:
+(P = calories$predictions_of_others[[meal]])
+```
+A total of 73 judges provided responses for this meal. The true calorie count is 990 calories. The first judge under-estimated the calorie count and provided an initial and final estimates of 140 and 122 calories, respectively. This judge predicted that the others' average estimate is 112 calories. The root-mean-squared-errors (RMSE) of the initial and final estimates, and their knowledge-weighted estimates are:
+
+```{r}
+# RMSE of the initial estimates:
+sqrt(mean((E1-theta)^2))
+# RMSE of the final estimates:
+sqrt(mean((E2-theta)^2))
+
+# RMSE of the knowledge-weighted estimate based on judges' initial estimates:
+(KWE1 =  knowledge_weighted_estimate(E1, P))
+sqrt((KWE1 - theta)^2)
+# RMSE of the knowledge-weighted estimate based on judges' final estimates:
+(KWE2 =  knowledge_weighted_estimate(E2, P))
+sqrt((KWE2 - theta)^2)
+
+```
+This shows that the knowledge-weighted estimate can improve the average accuracy of an individual judge. Specifically, based on the judges' initial and final estimates, the knowledge-weighted estimates are 814.64 and 865.07 calories, respectively. Given that the true calorie count is 990 calories, both aggregate estimates are too low but the knowledge-weighted estimate based on the judges' final estimates is more accurate. In this example, it improves the individual judges' RMSE from around 670 calories to around 125 calories.
+
