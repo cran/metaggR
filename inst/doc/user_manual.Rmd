@@ -1,6 +1,6 @@
 ---
 title: "Knowledge Weighted Estimate"
-author: Asa Palley and Ville Satopää
+# author: Asa Palley and Ville Satopää
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 
 # Introduction
-The `metaggR` package implements the knowledge-weighted estimate proposed in [Palley and Satopää (2020)](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3504286). 
+The `metaggR` package implements the knowledge-weighted estimate proposed in [Palley and Satopää (2021)](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3504286). 
 This procedure aggregates judges' estimates of a continuous outcome. To do so, each judge is asked to provide two 
 responses:
 
@@ -27,7 +27,7 @@ responses:
 Aggregation is done with the function `knowledge_weighted_estimate(E,P)` that inputs *J* judges’ estimates of the outcome (`E`) and predictions of others (`P`), and outputs the knowledge-weighted estimate. In the following two sections we will illustrate this aggregator on a simple example and on experimental data included in the package. 
 
 # Example 1: Three Gorges Dam
-This section illustrates `metaggR` on the Three Gorges Dam example in [Palley and Satopää (2020)](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3504286). First, we will upload the library:
+This section illustrates `metaggR` on the Three Gorges Dam example in [Palley and Satopää (2021)](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3504286). First, we will upload the library:
 
 ```{r setup}
 library(metaggR)
@@ -37,16 +37,16 @@ Next, we can aggregate the judges' estimates:
 
 ```{r}
 # Judges' estimates:
-E = c(50, 134, 206, 290, 326, 374)
+E1 = c(50, 134, 206, 290, 326, 374)
 # Judges' predictions of others:
-P = c(26, 92, 116, 218, 218, 206)
+P1 = c(26, 92, 116, 218, 218, 206)
 # Knowledge-weighted estimate:
-knowledge_weighted_estimate(E,P)
+knowledge_weighted_estimate(E1,P1)
 ```
-Therefore the final knowledge-weighted estimate is 329.3266.
+Therefore the final knowledge-weighted estimate is 329.305.
 
 # Example 2: Calorie Counts
-This section illustrates `metaggR` on real-world data collected in an experiment in Palley and Satopää (2020).
+This section illustrates `metaggR` on real-world data collected in an experiment in [Palley and Satopää (2021)](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3504286).
 In this experiment participants were presented with 36 different pictures of food from different restaurants
 and were asked to estimate the total number of calories in these dishes.
  Each response involves three steps:
@@ -68,7 +68,10 @@ To illustrate, we will consider the responses given for the first meal. First, w
 
 ```{r}
 library(metaggR)
-data(calories)
+data("E_CALORIES_INITIAL")
+data("E_CALORIES_FINAL")
+data("P_CALORIES")
+data("THETA_CALORIES")
 ```
 
 Next, we will pick out the responses given for the first meal:
@@ -76,29 +79,29 @@ Next, we will pick out the responses given for the first meal:
 ```{r}
 meal = 1
 # True number of calories in the first meal:
-(theta = calories$true_calories[meal])
+(theta = THETA_CALORIES[meal])
 # Judges' initial estimates of the number of calories in the first meal:
-(E1 = calories$estimates_initial[[meal]])
+(E_initial = E_CALORIES_INITIAL[[meal]])
 # Judges' final estimates of the number of calories in the first meal:
-(E2 = calories$estimates_final[[meal]])
+(E_final = E_CALORIES_FINAL[[meal]])
 # Judges' predictions of others' average estimate of the number of calories in the first meal:
-(P = calories$predictions_of_others[[meal]])
+(P = P_CALORIES[[meal]])
 ```
 A total of 73 judges provided responses for this meal. The true calorie count is 990 calories. The first judge under-estimated the calorie count and provided an initial and final estimates of 140 and 122 calories, respectively. This judge predicted that the others' average estimate is 112 calories. The root-mean-squared-errors (RMSE) of the initial and final estimates, and their knowledge-weighted estimates are:
 
 ```{r}
 # RMSE of the initial estimates:
-sqrt(mean((E1-theta)^2))
+sqrt(mean((E_initial-theta)^2))
 # RMSE of the final estimates:
-sqrt(mean((E2-theta)^2))
+sqrt(mean((E_final-theta)^2))
 
 # RMSE of the knowledge-weighted estimate based on judges' initial estimates:
-(KWE1 =  knowledge_weighted_estimate(E1, P))
+(KWE1 =  knowledge_weighted_estimate(E_initial, P, no_inf_check = TRUE))
 sqrt((KWE1 - theta)^2)
 # RMSE of the knowledge-weighted estimate based on judges' final estimates:
-(KWE2 =  knowledge_weighted_estimate(E2, P))
+(KWE2 =  knowledge_weighted_estimate(E_final, P, no_inf_check = TRUE))
 sqrt((KWE2 - theta)^2)
 
 ```
-This shows that the knowledge-weighted estimate can improve the average accuracy of an individual judge. Specifically, based on the judges' initial and final estimates, the knowledge-weighted estimates are 814.64 and 865.07 calories, respectively. Given that the true calorie count is 990 calories, both aggregate estimates are too low but the knowledge-weighted estimate based on the judges' final estimates is more accurate. In this example, it improves the individual judges' RMSE from around 670 calories to around 125 calories.
+This shows that the knowledge-weighted estimate can improve the average accuracy of an individual judge. Specifically, based on the judges' initial and final estimates, the knowledge-weighted estimates are 814.6392 and 865.0712 calories, respectively. Given that the true calorie count is 990 calories, both aggregate estimates are too low but the knowledge-weighted estimate based on the judges' final estimates is more accurate. In this example, it improves the individual judges' RMSE from around 670 calories to around 125 calories.
 

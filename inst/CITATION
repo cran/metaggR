@@ -7,7 +7,7 @@ citEntry(entry = "Unpublished",
          Note          = "Available in https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3504286",
 
          textVersion  =
-           paste("Asa Palley, Ville Satopää (2020)",
+           paste("Asa Palley, Ville Satopää (2021)",
                  "Boosting the Wisdom of Crowds Within a Single Judgment Problem: Selective Averaging Based on Peer Predictions",
                  "SSRN",
                  "URL https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3504286")
