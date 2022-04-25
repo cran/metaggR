@@ -1,7 +1,7 @@
 Package: metaggR
 Type: Package
 Title: Calculate the Knowledge-Weighted Estimate
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     c(person(given = "Ville",
              family = "Satopää",
@@ -41,11 +41,11 @@ Imports: MASS, stats
 Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.1)
 NeedsCompilation: no
-Packaged: 2021-08-17 16:32:20 UTC; ville.satopaa
+Packaged: 2022-04-25 09:44:27 UTC; ville.satopaa
 Author: Ville Satopää [aut, cre, cph],
   Asa Palley [aut]
 Maintainer: Ville Satopää <ville.satopaa@gmail.com>
 Repository: CRAN
-Date/Publication: 2021-08-17 16:40:06 UTC
+Date/Publication: 2022-04-25 10:00:02 UTC

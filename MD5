@@ -1,5 +1,6 @@
-c77bc34a3751d1604abb52c58149f6a0 *DESCRIPTION
+d5dc60eb572097870852e33c4634c1b2 *DESCRIPTION
 d28cb9f7493ad257c55be889197de03e *NAMESPACE
+5146f7b9c210b5d6e714aaf258332381 *NEWS.md
 b142017cfc9b7eb897f1f41312b7955c *R/CALORIES.R
 874d90ce01b7483b9518f285d03a16a8 *R/COINS.R
 097bd0a801e57909cb33c6606d1cea9c *R/GK.R
@@ -11,8 +12,8 @@ e3de4c284403e97c18da1db7b7cc99f3 *R/knowledge_gap.R
 3535c61521dcc74676852622b06206c4 *R/knowledge_weighted_estimate.R
 79af52a0167618a16a78895515f7c4e3 *R/knowledge_weights.R
 b78992e1efb7a23ffe145dfae48d279c *README.md
-3fca0cb26ed073e8a5707a5bdd0bff79 *build/partial.rdb
-cd208cf60c18d76657ed003cad6740d7 *build/vignette.rds
+a5fa0cc5e3e30c4b77983a1c55babfec *build/partial.rdb
+34791a46cbaf2cd7fa5e241b6bd05cd7 *build/vignette.rds
 aa5174136d5529243ebc38e783fc9a72 *data/E_CALORIES_FINAL.RData
 4f12cfd8777cef8b14a21ffe0db3446b *data/E_CALORIES_INITIAL.RData
 0b9c74a7148409ec34c60490a307493e *data/E_COINS_NESTED.RData
@@ -66,7 +67,7 @@ d41d8cd98f00b204e9800998ecf8427e *inst/AUTHOR
 5004204b64e36586c148cc6779efd683 *inst/CITATION
 7158b91c833a34a46f16421de9bd0c2f *inst/doc/user_manual.R
 a1208c24ad9348dfbe999a90528d2c57 *inst/doc/user_manual.Rmd
-de7827d1b85a5851819c35ef2aea68b7 *inst/doc/user_manual.html
+e28261e4d0735099b075c4676e55842a *inst/doc/user_manual.html
 d9b8de92ec13bfde5d75bef048622a21 *man/Calorie_Counts.Rd
 f8a7ebfa78bf7148f89ae63ccd58dd31 *man/Coin_Flips.Rd
 52b12b08c486b63ebfc8528bdf85ca0f *man/General_Knowledge_Statements.Rd
